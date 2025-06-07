@@ -1,17 +1,15 @@
 #include "trebuchet.h"
 #include "file_reader.h"
+#include <cctype>
 #include <cstdio>
 #include <optional>
-
-// Requirements for trebuchet part 1
-bool is_digit(char c) { return c >= '0' && c <= '9'; }
 
 int get_calibration_value(const std::string_view line) {
     int left_digit = -1;
     int right_digit = -1;
     // Get the first digit
     for (size_t i = 0; i < line.size(); i++) {
-        if (is_digit(line[i])) {
+        if (isdigit(line[i])) {
             left_digit = line[i] - '0';
             break;
         }
@@ -19,7 +17,7 @@ int get_calibration_value(const std::string_view line) {
 
     // Get the last digit
     for (size_t i = line.size() - 1; i >= 0; i--) {
-        if (is_digit(line[i])) {
+        if (isdigit(line[i])) {
             right_digit = line[i] - '0';
             break;
         }
@@ -63,7 +61,7 @@ void bad_character_heuristic(const std::string_view str, const size_t size,
     }
 }
 
-std::vector<int> search(const std::string_view &str, const std::string pat) {
+std::vector<int> search(const std::string_view str, const std::string pat) {
     std::vector<int> occurences;
 
     int m = pat.size();
@@ -131,7 +129,7 @@ const std::string values[] = {
     "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9",
 };
 
-int get_line_calibration_value(const std::string_view &line) {
+int get_line_calibration_value(const std::string_view line) {
     int min_occurence = line.size();
     int min_value = 0;
 

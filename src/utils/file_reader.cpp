@@ -1,23 +1,6 @@
 #include "file_reader.h"
+#include "string_utils.h"
 #include <sstream>
-
-std::vector<std::string> split_string(std::string str, char delimeter) {
-    std::vector<std::string> lines;
-
-    std::string current_line = "";
-
-    for (size_t i = 0; i < str.length(); i++) {
-        char current_character = str[i];
-        if (current_character == delimeter) {
-            lines.push_back(current_line);
-            current_line = "";
-        } else {
-            current_line.push_back(current_character);
-        }
-    }
-
-    return lines;
-}
 
 std::expected<FileReader, std::string> FileReader::try_make(char *path) {
     std::ifstream file(path);
@@ -36,10 +19,14 @@ FileReader::FileReader(std::ifstream *file) {
     lines = split_string(contents, '\n');
 
     // for (auto line : lines) {
-    // 	printf("Line!: %s\n", line.c_str());
+    //     printf("Line!: %s\n", line.c_str());
     // }
 
-    // lines_iter = lines.begin();
+    // for (auto lines_it = lines.begin(); lines_it != lines.end(); lines_it++)
+    // {
+    //     printf("%s\n", lines_it->c_str());
+    // }
+
     lines_iter = 0;
 }
 
