@@ -1,6 +1,9 @@
+#include "trebuchet.h"
+#include <expected>
 #include <stdio.h>
 
 int main() {
-	printf("Hello, World!\n");
-	return 0;
+    trebuchet_part1();
+    trebuchet_part2();
+    return 0;
 }
