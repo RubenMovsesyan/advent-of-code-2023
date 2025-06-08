@@ -55,6 +55,14 @@ void EngineSchematic::parse_line(const std::string_view &line) {
         }
     }
 
+    // If there is a current number still in the queue then add it to the part
+    // numbers
+    if (current_number) {
+        int32_t range[2] = {current_range_start, (int32_t)line.size()};
+        part_numbers.emplace_back(current_number, y_count, range);
+        current_number = 0;
+    }
+
     y_count++;
 }
 
@@ -107,6 +115,7 @@ void gear_ratios_part1() {
         while (auto line = reader->next_line()) {
             engine.parse_line(*line);
         }
+        // engine.print_engine_description();
         printf("Engine Parts Sum: %d\n", engine.get_parts_sum());
 
     } else {
