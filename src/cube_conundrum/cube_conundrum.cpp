@@ -27,8 +27,6 @@ inline Color get_color(const std::string_view &color_str) {
     return Color::None;
 }
 
-inline bool is_digit(char c) { return c <= '9' && c >= '0'; }
-
 GameSet::GameSet(const std::string_view &parseable) {
     std::vector<std::string> comma_split = split_string(parseable, ',');
 

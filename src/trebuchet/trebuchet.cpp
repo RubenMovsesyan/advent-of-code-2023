@@ -124,7 +124,7 @@ std::optional<int> get_max(const std::vector<int> &vec) {
     }
 }
 
-const std::string values[] = {
+const std::string VALUES[] = {
     "zero", "0", "one", "1", "two",   "2", "three", "3", "four", "4",
     "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9",
 };
@@ -137,7 +137,7 @@ int get_line_calibration_value(const std::string_view line) {
     int max_value = 0;
 
     for (int i = 2; i < 20; i++) {
-        std::vector<int> occurences = search(line, values[i]);
+        std::vector<int> occurences = search(line, VALUES[i]);
 
         auto value_min = get_min(occurences);
         auto value_max = get_max(occurences);
