@@ -6,6 +6,14 @@
 #include <unordered_set>
 #include <vector>
 
+enum class GearType : uint8_t {
+    None,
+    Single,
+    Double,
+};
+
+void add_gear(GearType &gear_type);
+
 struct PartNumber {
     int32_t number{};
     int32_t y{};
@@ -15,19 +23,23 @@ struct PartNumber {
     ~PartNumber();
 };
 
-struct Position {
+struct Symbol {
+    char symbol;
     int32_t x, y;
+    int32_t ratio = 0;
+    GearType gear_type = GearType::None;
 
-    Position(int32_t x, int32_t y);
-    ~Position();
+    Symbol(int32_t x, int32_t y);
+    Symbol(int32_t x, int32_t y, char symbol);
+    ~Symbol();
 
-    bool operator==(const Position &other) const {
+    bool operator==(const Symbol &other) const {
         return x == other.x && y == other.y;
     }
 };
 
 struct PositionHash {
-    size_t operator()(const Position &position) const {
+    size_t operator()(const Symbol &position) const {
         return position.x + position.y;
     }
 };
@@ -42,13 +54,15 @@ class EngineSchematic {
     void parse_line(const std::string_view &line);
 
     int32_t get_parts_sum();
+    int32_t get_gear_ratios();
 
   private:
     int32_t y_count;
     std::vector<PartNumber> part_numbers;
-    std::unordered_set<Position, PositionHash> symbols;
+    std::unordered_set<Symbol, PositionHash> symbols;
 };
 
 void gear_ratios_part1();
+void gear_ratios_part2();
 
 #endif

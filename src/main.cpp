@@ -16,6 +16,7 @@ int main() {
 
     // Day 3
     gear_ratios_part1();
+    gear_ratios_part2();
 
     return 0;
 }

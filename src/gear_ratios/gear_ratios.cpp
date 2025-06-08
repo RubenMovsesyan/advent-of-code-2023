@@ -16,12 +16,26 @@ PartNumber::PartNumber(int32_t part_num, int32_t part_y,
 
 PartNumber::~PartNumber() {}
 
-Position::Position(int32_t x, int32_t y) {
+void add_gear(GearType &gear_type) {
+    if (gear_type == GearType::None) {
+        gear_type = GearType::Single;
+    } else if (gear_type == GearType::Single) {
+        gear_type = GearType::Double;
+    }
+}
+
+Symbol::Symbol(int32_t x, int32_t y) {
     this->x = x;
     this->y = y;
 }
 
-Position::~Position() {}
+Symbol::Symbol(int32_t x, int32_t y, char symbol) {
+    this->x = x;
+    this->y = y;
+    this->symbol = symbol;
+}
+
+Symbol::~Symbol() {}
 
 EngineSchematic::EngineSchematic() { y_count = 0; }
 EngineSchematic::~EngineSchematic() {}
@@ -50,7 +64,7 @@ void EngineSchematic::parse_line(const std::string_view &line) {
 
             // Add the symbol position to the set of symbols if there is one
             if (line[i] != '.') {
-                symbols.insert(Position(i, y_count));
+                symbols.insert(Symbol(i, y_count, line[i]));
             }
         }
     }
@@ -92,7 +106,7 @@ int32_t EngineSchematic::get_parts_sum() {
                  i++) {
                 for (int32_t j = i - 1; j < i + 1; j++) {
                     for (int32_t k = part_num.y - 1; k <= part_num.y + 1; k++) {
-                        if (symbols.contains(Position(j, k))) {
+                        if (symbols.contains(Symbol(j, k))) {
                             total_parts_sum += part_num.number;
                             return;
                         }
@@ -105,6 +119,58 @@ int32_t EngineSchematic::get_parts_sum() {
     return total_parts_sum;
 }
 
+int32_t EngineSchematic::get_gear_ratios() {
+    for (auto part_num : part_numbers) {
+        [&]() {
+            for (int32_t i = part_num.x_range[0]; i <= part_num.x_range[1];
+                 i++) {
+                for (int32_t j = i - 1; j < i + 1; j++) {
+                    for (int32_t k = part_num.y - 1; k <= part_num.y + 1; k++) {
+                        auto symbol_handle = symbols.extract(Symbol(j, k));
+                        bool ret = false;
+                        if (!symbol_handle.empty()) {
+                            Symbol symbol = symbol_handle.value();
+                            if (symbol.symbol == '*') {
+                                // printf("Found Symbol: %d %c\n",
+                                // part_num.number,
+                                //        symbol.symbol);
+
+                                // Only multiply if the number is not 0
+                                // Otherwise set it to that number
+                                if (symbol.ratio) {
+                                    symbol.ratio *= part_num.number;
+                                } else {
+                                    symbol.ratio = part_num.number;
+                                }
+
+                                add_gear(symbol.gear_type);
+
+                                ret = true;
+                            }
+
+                            symbols.insert(std::move(symbol));
+
+                            if (ret) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }();
+    }
+
+    int32_t total_gear_ratios = 0;
+
+    for (auto gear : symbols) {
+        if (gear.gear_type == GearType::Double) {
+            total_gear_ratios += gear.ratio;
+        }
+    }
+
+    return total_gear_ratios;
+}
+
 void gear_ratios_part1() {
     auto reader = FileReader::try_make(
         (char *)"../test_files/gear_ratios/gear_ratios.txt");
@@ -115,8 +181,24 @@ void gear_ratios_part1() {
         while (auto line = reader->next_line()) {
             engine.parse_line(*line);
         }
-        // engine.print_engine_description();
         printf("Engine Parts Sum: %d\n", engine.get_parts_sum());
+
+    } else {
+        printf("Error: %s\n", reader.error().c_str());
+    }
+}
+
+void gear_ratios_part2() {
+    auto reader = FileReader::try_make(
+        (char *)"../test_files/gear_ratios/gear_ratios.txt");
+
+    if (reader) {
+        EngineSchematic engine;
+
+        while (auto line = reader->next_line()) {
+            engine.parse_line(*line);
+        }
+        printf("Engine Gear Ratios: %d\n", engine.get_gear_ratios());
 
     } else {
         printf("Error: %s\n", reader.error().c_str());
