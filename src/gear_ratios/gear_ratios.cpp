@@ -172,8 +172,8 @@ int32_t EngineSchematic::get_gear_ratios() {
 }
 
 void gear_ratios_part1() {
-    auto reader = FileReader::try_make(
-        (char *)"../test_files/gear_ratios/gear_ratios.txt");
+    auto reader =
+        FileReader::try_make((char *)"test_files/gear_ratios/gear_ratios.txt");
 
     if (reader) {
         EngineSchematic engine;
@@ -189,8 +189,8 @@ void gear_ratios_part1() {
 }
 
 void gear_ratios_part2() {
-    auto reader = FileReader::try_make(
-        (char *)"../test_files/gear_ratios/gear_ratios.txt");
+    auto reader =
+        FileReader::try_make((char *)"test_files/gear_ratios/gear_ratios.txt");
 
     if (reader) {
         EngineSchematic engine;

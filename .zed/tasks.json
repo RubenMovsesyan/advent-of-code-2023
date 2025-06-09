@@ -1,0 +1,6 @@
+[
+    {
+        "label": "Run",
+        "command": "./build_debug.sh && ./build/trebuchet"
+    }
+]

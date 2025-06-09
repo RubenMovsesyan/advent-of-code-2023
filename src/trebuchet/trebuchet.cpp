@@ -28,7 +28,7 @@ int get_calibration_value(const std::string_view line) {
 
 void trebuchet_part1() {
     auto reader =
-        FileReader::try_make((char *)"../test_files/trebuchet/trebuchet.txt");
+        FileReader::try_make((char *)"test_files/trebuchet/trebuchet.txt");
     uint64_t total = 0;
 
     if (reader) {
@@ -162,7 +162,7 @@ int get_line_calibration_value(const std::string_view line) {
 
 void trebuchet_part2() {
     auto reader =
-        FileReader::try_make((char *)"../test_files/trebuchet/trebuchet.txt");
+        FileReader::try_make((char *)"test_files/trebuchet/trebuchet.txt");
     uint64_t total = 0;
 
     if (reader) {

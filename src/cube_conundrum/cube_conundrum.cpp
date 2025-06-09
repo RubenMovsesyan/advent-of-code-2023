@@ -114,7 +114,7 @@ const int GAME_PARAMS[3] = {12, 13, 14};
 
 void cube_conundrum_part1() {
     auto reader = FileReader::try_make(
-        (char *)"../test_files/cube_conundrum/cube_conundrum.txt");
+        (char *)"test_files/cube_conundrum/cube_conundrum.txt");
 
     int ids_sum = 0;
     if (reader) {
@@ -134,7 +134,7 @@ void cube_conundrum_part1() {
 
 void cube_conundrum_part2() {
     auto reader = FileReader::try_make(
-        (char *)"../test_files/cube_conundrum/cube_conundrum.txt");
+        (char *)"test_files/cube_conundrum/cube_conundrum.txt");
 
     int total_power = 0;
     if (reader) {
